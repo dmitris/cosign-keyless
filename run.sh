@@ -7,7 +7,7 @@ set -euo pipefail
 # - go
 
 IMG=${IMAGE_URI_DIGEST:-}
-
+TIMESTAMP_SERVER_URL=${TIMESTAMP_SERVER_URL:="https://freetsa.org/tsr"}
 if [[ "$#" -ge 1 ]]; then
 	IMG=$1
 elif [[ -z "${IMG}" ]]; then
@@ -18,7 +18,8 @@ elif [[ -z "${IMG}" ]]; then
 	crane cp $SRC_IMAGE@$SRC_DIGEST $IMAGE_URI:3h
 	IMG=$IMAGE_URI@$SRC_DIGEST
 fi
-echo "IMG (IMAGE_URI_DIGEST): $IMG"
+
+echo "IMG (IMAGE_URI_DIGEST): $IMG, TIMESTAMP_SERVER_URL: $TIMESTAMP_SERVER_URL"
 
 GOBIN=/tmp GOPROXY=https://proxy.golang.org,direct go install -v github.com/dmitris/gencert@latest
 
@@ -32,7 +33,7 @@ passwd=$(uuidgen | head -c 32 | tr 'A-Z' 'a-z')
 rm -f *.pem import-cosign.* && /tmp/gencert && COSIGN_PASSWORD="$passwd" cosign import-key-pair --key key.pem
 
 echo "cosign sign:"
-COSIGN_PASSWORD="$passwd" cosign sign --timestamp-server-url https://freetsa.org/tsr --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
+COSIGN_PASSWORD="$passwd" cosign sign --timestamp-server-url "${TIMESTAMP_SERVER_URL}" --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
 
 # key is now longer needed
 rm -f key.pem import-cosign.* 
