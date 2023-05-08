@@ -33,8 +33,6 @@ echo "IMG: $IMG, TIMESTAMP_SERVER_URL: $TIMESTAMP_SERVER_URL"
 
 GOBIN=/tmp GOPROXY=https://proxy.golang.org,direct go install -v github.com/dmitris/gencert@latest
 
-rm -f *.pem import-cosign.* key.pem
-
 passwd=$(uuidgen | head -c 32 | tr 'A-Z' 'a-z')
 # use gencert to generate CA, keys and certificates
 echo "generate keys and certificates with gencert"
@@ -42,7 +40,6 @@ rm -f *.pem import-cosign.* && /tmp/gencert && COSIGN_PASSWORD="$passwd" cosign 
 
 # crane digest $IMG || true
 
-COSIGN_PASSWORD="$passwd" cosign import-key-pair --key key.pem
 echo "cosign sign:"
 COSIGN_PASSWORD="$passwd" cosign sign --timestamp-server-url "${TIMESTAMP_SERVER_URL}" --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
 
