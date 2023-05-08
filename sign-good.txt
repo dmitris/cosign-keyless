@@ -1,0 +1,227 @@
++ set -euo pipefail
++ DOCKER_REGISTRY=docker.ouroath.com:4443
++ DOCKER_USER=dsavints777
++ IMG=
++ TIMESTAMP_SERVER_URL=https://freetsa.org/tsr
++ [[ 0 -ge 1 ]]
++ [[ -z '' ]]
++ SRC_IMAGE=busybox
+++ uuidgen
+++ head -c 8
+++ tr A-Z a-z
++ RAND_NAME=969c16bb
++ IMAGE_URI=docker.ouroath.com:4443/dsavints777/busybox-969c16bb
++ echo 'IMAGE_URI: docker.ouroath.com:4443/dsavints777/busybox-969c16bb'
+IMAGE_URI: docker.ouroath.com:4443/dsavints777/busybox-969c16bb
++ docker build -t docker.ouroath.com:4443/dsavints777/busybox-969c16bb .
+#1 [internal] load build definition from Dockerfile
+#1 sha256:ec60c9459cf5f65ee0d3fdb2c5d9940ac18b986661585afa4b1a659442ffaa19
+#1 transferring dockerfile: 36B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 sha256:46504987649c46a9cd0ad94b4d8379648a5b1eab058ae3f427bc265f39540571
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/busybox:latest
+#3 sha256:da853382a7535e068feae4d80bdd0ad2567df3d5cd484fd68f919294d091b053
+#3 DONE 0.0s
+
+#4 [1/1] FROM docker.io/library/busybox
+#4 sha256:08a03f3ffe5fba421a6403c31e153425ced631d108868f30e04985f99d69326e
+#4 CACHED
+
+#5 exporting to image
+#5 sha256:e8c613e07b0b7ff33893b694f7759a10d42e180f2b4dc349fb57dc6b71dcab00
+#5 exporting layers done
+#5 writing image sha256:2af256090a5f10cee09d8583b51f96293b18ee5abce0cdf14bbc69e19a2ed69c done
+#5 naming to docker.ouroath.com:4443/dsavints777/busybox-969c16bb done
+#5 DONE 0.0s
++ docker tag docker.ouroath.com:4443/dsavints777/busybox-969c16bb docker.ouroath.com:4443/dsavints777/busybox-969c16bb:1.0
++ docker push -a docker.ouroath.com:4443/dsavints777/busybox-969c16bb
+The push refers to repository [docker.ouroath.com:4443/dsavints777/busybox-969c16bb]
+baacf561cfff: Preparing
+baacf561cfff: Layer already exists
+1.0: digest: sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7 size: 527
+baacf561cfff: Preparing
+baacf561cfff: Layer already exists
+latest: digest: sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7 size: 527
+++ docker manifest inspect --verbose docker.ouroath.com:4443/dsavints777/busybox-969c16bb
+++ jq -r '.Descriptor | .digest'
++ SRC_DIGEST=sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7
++ IMG=docker.ouroath.com:4443/dsavints777/busybox-969c16bb@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7
++ echo 'IMG: docker.ouroath.com:4443/dsavints777/busybox-969c16bb@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7'
+IMG: docker.ouroath.com:4443/dsavints777/busybox-969c16bb@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7
++ docker inspect docker.ouroath.com:4443/dsavints777/busybox-969c16bb@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7
+[
+    {
+        "Id": "sha256:2af256090a5f10cee09d8583b51f96293b18ee5abce0cdf14bbc69e19a2ed69c",
+        "RepoTags": [
+            "docker.ouroath.com:4443/dsavintd777/busybox-6865bbd1:1.0",
+            "docker.ouroath.com:4443/dsavintd777/busybox-6865bbd1:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-005868a7:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-005868a7:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-08b1d64c:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-08b1d64c:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-1829c6cc:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-1829c6cc:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-191c422d:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-191c422d:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-1e5383a4:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-1e5383a4:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-230a9588:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-230a9588:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-2bd8bd7b:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-2bd8bd7b:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-4cb1facf:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-4cb1facf:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-55828a3e:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-55828a3e:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-59b6eb73:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-59b6eb73:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-6c097aff:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-6c097aff:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-8824bc52:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-8824bc52:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-8a613c93:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-8a613c93:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-90755088:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-969c16bb:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-969c16bb:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-97f88437:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-97f88437:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-a0711b57:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-a26da30b:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-a26da30b:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-a7504e70:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-a7504e70:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-be0ea5a7:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-be0ea5a7:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-d110bcd3:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-d110bcd3:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-dd77ae6f:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-dd77ae6f:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-e33d60f5:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-e33d60f5:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-e4f515f1:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-e4f515f1:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox-fcccc0aa:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox-fcccc0aa:latest",
+            "docker.ouroath.com:4443/dsavints777/busybox:1.0",
+            "docker.ouroath.com:4443/dsavints777/busybox:1.1",
+            "docker.ouroath.com:4443/dsavints777/busybox:1.2",
+            "docker.ouroath.com:4443/dsavints777/busybox:55fb6183",
+            "docker.ouroath.com:4443/dsavints777/busybox:607be6fc",
+            "docker.ouroath.com:4443/dsavints777/busybox:6bb3dde5",
+            "docker.ouroath.com:4443/dsavints777/busybox:fdda8ac9",
+            "docker.ouroath.com:4443/dsavints777/busybox:latest"
+        ],
+        "RepoDigests": [
+            "docker.ouroath.com:4443/dsavintd777/busybox-6865bbd1@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-005868a7@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-08b1d64c@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-1829c6cc@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-191c422d@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-1e5383a4@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-230a9588@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-2bd8bd7b@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-4cb1facf@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-55828a3e@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-59b6eb73@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-6c097aff@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-8824bc52@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-8a613c93@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-969c16bb@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-97f88437@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-a0711b57@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-a26da30b@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-a7504e70@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-be0ea5a7@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-d110bcd3@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-dd77ae6f@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-e33d60f5@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-e4f515f1@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox-fcccc0aa@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7",
+            "docker.ouroath.com:4443/dsavints777/busybox@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7"
+        ],
+        "Parent": "",
+        "Comment": "",
+        "Created": "2023-03-17T01:35:43.433864398Z",
+        "Container": "",
+        "ContainerConfig": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": null,
+            "Cmd": null,
+            "Image": "",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": null
+        },
+        "DockerVersion": "",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": [
+                "sh"
+            ],
+            "Image": "",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": null
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 4863138,
+        "VirtualSize": 4863138,
+        "GraphDriver": {
+            "Data": {
+                "MergedDir": "/var/lib/docker/overlay2/e8412e54296acddb664a7e66c96c8429fc1847f20fb07b7fc77b6af514e3d99a/merged",
+                "UpperDir": "/var/lib/docker/overlay2/e8412e54296acddb664a7e66c96c8429fc1847f20fb07b7fc77b6af514e3d99a/diff",
+                "WorkDir": "/var/lib/docker/overlay2/e8412e54296acddb664a7e66c96c8429fc1847f20fb07b7fc77b6af514e3d99a/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:baacf561cfff825708763ce7ee4a18293716c533e6ece3bd39009a5fb3c804d2"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2023-05-08T16:09:10.653905995Z"
+        }
+    }
+]
++ echo 'IMG: docker.ouroath.com:4443/dsavints777/busybox-969c16bb@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7, TIMESTAMP_SERVER_URL: https://freetsa.org/tsr'
+IMG: docker.ouroath.com:4443/dsavints777/busybox-969c16bb@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7, TIMESTAMP_SERVER_URL: https://freetsa.org/tsr
++ passwd=65d27312-493c-4965-a6e7-ce6087a6
++ echo 'cosign sign:'
+cosign sign:
++ COSIGN_PASSWORD=65d27312-493c-4965-a6e7-ce6087a6
++ cosign sign --timestamp-server-url https://freetsa.org/tsr --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem docker.ouroath.com:4443/dsavints777/busybox-969c16bb@sha256:2fff0c6f1f97a71b9d5ad81a41ace16a2f1e83b90d3d050f615a61b393575df7
+Timestamp fetched with time:  2023-05-08 16:09:29 +0000 UTC
+Pushing signature to: docker.ouroath.com:4443/dsavints777/busybox-969c16bb
