@@ -5,21 +5,30 @@ set -euo pipefail
 # - cosign
 # - crane
 # - go
+DOCKER_REGISTRY="docker.ouroath.com:4443"
+DOCKER_USER="dsavints777"
+# export COSIGN_REPOSITORY=dsavints777
 
 IMG=${IMAGE_URI_DIGEST:-}
 TIMESTAMP_SERVER_URL=${TIMESTAMP_SERVER_URL:="https://freetsa.org/tsr"}
 if [[ "$#" -ge 1 ]]; then
 	IMG=$1
 elif [[ -z "${IMG}" ]]; then
-	# Upload an image to ttl.sh - commands from https://docs.sigstore.dev/cosign/keyless/
 	SRC_IMAGE=busybox
-	SRC_DIGEST=$(crane digest busybox)
-	IMAGE_URI=ttl.sh/$(uuidgen | head -c 8 | tr 'A-Z' 'a-z')
-	crane cp $SRC_IMAGE@$SRC_DIGEST $IMAGE_URI:3h
+	RAND_NAME=$(uuidgen | head -c 8 | tr 'A-Z' 'a-z')
+	IMAGE_URI="$DOCKER_REGISTRY/$DOCKER_USER/busybox-$RAND_NAME"
+	echo "IMAGE_URI: $IMAGE_URI"
+	docker build -t $IMAGE_URI .	
+	docker tag $IMAGE_URI $IMAGE_URI:1.0
+	docker push -a $IMAGE_URI
+	SRC_DIGEST=$(docker manifest inspect --verbose $IMAGE_URI | jq -r '.Descriptor | .digest')
 	IMG=$IMAGE_URI@$SRC_DIGEST
+	echo "IMG: ${IMG}"
+	docker inspect $IMG || exit 42
 fi
 
-echo "IMG (IMAGE_URI_DIGEST): $IMG, TIMESTAMP_SERVER_URL: $TIMESTAMP_SERVER_URL"
+
+echo "IMG: $IMG, TIMESTAMP_SERVER_URL: $TIMESTAMP_SERVER_URL"
 
 GOBIN=/tmp GOPROXY=https://proxy.golang.org,direct go install -v github.com/dmitris/gencert@latest
 
@@ -31,6 +40,8 @@ echo "generate keys and certificates with gencert"
 
 passwd=$(uuidgen | head -c 32 | tr 'A-Z' 'a-z')
 rm -f *.pem import-cosign.* && /tmp/gencert && COSIGN_PASSWORD="$passwd" cosign import-key-pair --key key.pem
+
+crane digest $IMG || true
 
 echo "cosign sign:"
 COSIGN_PASSWORD="$passwd" cosign sign --timestamp-server-url "${TIMESTAMP_SERVER_URL}" --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
