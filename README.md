@@ -1,4 +1,17 @@
 # cosign-keyless
+## PENG-5291-sign
+
+- check out the `peng-5291-sign` branch
+- double-check and if necessary change the `DOCKER_USER` in the `run.sh`, set to `"${USER}777"`
+- build `cosign` and if necessary change/export `PATH` to find the right `cosign` (ex. `export PATH="/tmp/cosign:$PATH"`, etc.)
+- `./zts.sh` 
+- (optional) ensure you can push images (for example, build and push example using the `Dockerfile` in this repo)
+- `./run.sh`
+
+Note that the rest of README is from https://github.com/dmitris/cosign-keyless/blob/main/README.md and doesn't reflect the changes in
+the `peng-5291-sign` branch.
+
+# Description
 `run.sh` is a test script that generates CA and certificate and
 runs `cosign sign` and `cosign verify` with the ["keyless verification"](https://docs.sigstore.dev/cosign/keyless/).
 

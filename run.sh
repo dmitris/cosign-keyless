@@ -7,9 +7,8 @@ set -euo pipefail
 # - go
 
 DOCKER_REGISTRY="docker.ouroath.com:4443"
-DOCKER_USER="dsavints777"  ## CHANGE THIS to your docker repo!
+DOCKER_USER="${USER}777"  ## CHANGE THIS to your docker repo!
 BASE_IMAGE=scratch
-# export COSIGN_REPOSITORY=dsavints777
 
 IMG=${IMAGE_URI_DIGEST:-}
 TIMESTAMP_SERVER_URL=${TIMESTAMP_SERVER_URL:="https://freetsa.org/tsr"}
