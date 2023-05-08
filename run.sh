@@ -5,8 +5,9 @@ set -euo pipefail
 # - cosign
 # - crane
 # - go
+
 DOCKER_REGISTRY="docker.ouroath.com:4443"
-DOCKER_USER="dsavints777"
+DOCKER_USER="dsavints777"  ## CHANGE THIS to your docker repo!
 BASE_IMAGE=scratch
 # export COSIGN_REPOSITORY=dsavints777
 
@@ -30,25 +31,23 @@ fi
 
 echo "IMG: $IMG, TIMESTAMP_SERVER_URL: $TIMESTAMP_SERVER_URL"
 
-# GOBIN=/tmp GOPROXY=https://proxy.golang.org,direct go install -v github.com/dmitris/gencert@latest
+GOBIN=/tmp GOPROXY=https://proxy.golang.org,direct go install -v github.com/dmitris/gencert@latest
 
-# rm -f *.pem import-cosign.* key.pem
+rm -f *.pem import-cosign.* key.pem
 
-
-# # use gencert to generate CA, keys and certificates
-# echo "generate keys and certificates with gencert"
-# rm -f *.pem import-cosign.* && /tmp/gencert && COSIGN_PASSWORD="$passwd" cosign import-key-pair --key key.pem
+passwd=$(uuidgen | head -c 32 | tr 'A-Z' 'a-z')
+# use gencert to generate CA, keys and certificates
+echo "generate keys and certificates with gencert"
+rm -f *.pem import-cosign.* && /tmp/gencert && COSIGN_PASSWORD="$passwd" cosign import-key-pair --key key.pem
 
 # crane digest $IMG || true
 
-# passwd=$(uuidgen | head -c 32 | tr 'A-Z' 'a-z')
-passwd="65d27312-493c-4965-a6e7-ce6087a6"
-# COSIGN_PASSWORD="$passwd" cosign import-key-pair --key key.pem
+COSIGN_PASSWORD="$passwd" cosign import-key-pair --key key.pem
 echo "cosign sign:"
 COSIGN_PASSWORD="$passwd" cosign sign --timestamp-server-url "${TIMESTAMP_SERVER_URL}" --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
 
 # key is now longer needed
-# rm -f key.pem import-cosign.* 
+rm -f key.pem import-cosign.* 
 
 # echo "cosign verify:"
 # cosign verify --insecure-ignore-tlog --insecure-ignore-sct --check-claims=true \
