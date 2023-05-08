@@ -25,7 +25,7 @@ elif [[ -z "${IMG}" ]]; then
 	SRC_DIGEST=$(docker manifest inspect --verbose $IMAGE_URI | jq -r '.Descriptor | .digest')
 	IMG=$IMAGE_URI@$SRC_DIGEST
 	echo "IMG: ${IMG}"
-	docker inspect $IMG || exit 42
+	docker inspect $IMG >& /dev/null || exit 42
 fi
 
 
