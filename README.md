@@ -8,6 +8,11 @@
 - (optional) ensure you can push images (for example, build and push example using the `Dockerfile` in this repo)
 - `./run.sh`
 
+The expected results:
+- `cosign` built from the commit [bdf1c763158c91b23de281226a4d35ec66f71df6](https://github.com/sigstore/cosign/commit/bdf1c763158c91b23de281226a4d35ec66f71df6) works fine ("good").
+- `cosign` built from the commit [17cc13812d8a7bfbb068ffc10fdbbdb3a9416f11](https://github.com/sigstore/cosign/commit/17cc13812d8a7bfbb068ffc10fdbbdb3a9416f11) ([PR2929](https://github.com/sigstore/cosign/pull/2929)) breaks
+- (optional / "nice to know") `cosign` built from the partial change - `github.com/google/go-containerregistry` upgrade from `v13.x` to `v14.x` as in the https://github.com/dmitris/cosign/tree/pr2929-break branch breaks as well.
+
 Note that the rest of README is from https://github.com/dmitris/cosign-keyless/blob/main/README.md and doesn't reflect the changes in
 the `peng-5291-sign` branch.
 
