@@ -1,2 +1,2 @@
-FROM busybox 
+FROM scratch
 

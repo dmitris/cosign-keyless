@@ -7,6 +7,7 @@ set -euo pipefail
 # - go
 DOCKER_REGISTRY="docker.ouroath.com:4443"
 DOCKER_USER="dsavints777"
+BASE_IMAGE=scratch
 # export COSIGN_REPOSITORY=dsavints777
 
 IMG=${IMAGE_URI_DIGEST:-}
@@ -14,9 +15,8 @@ TIMESTAMP_SERVER_URL=${TIMESTAMP_SERVER_URL:="https://freetsa.org/tsr"}
 if [[ "$#" -ge 1 ]]; then
 	IMG=$1
 elif [[ -z "${IMG}" ]]; then
-	SRC_IMAGE=busybox
 	RAND_NAME=$(uuidgen | head -c 8 | tr 'A-Z' 'a-z')
-	IMAGE_URI="$DOCKER_REGISTRY/$DOCKER_USER/busybox-$RAND_NAME"
+	IMAGE_URI="$DOCKER_REGISTRY/$DOCKER_USER/${BASE_IMAGE}-${RAND_NAME}"
 	echo "IMAGE_URI: $IMAGE_URI"
 	docker build -t $IMAGE_URI .	
 	docker tag $IMAGE_URI $IMAGE_URI:1.0
