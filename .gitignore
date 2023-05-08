@@ -6,3 +6,4 @@ import-cosign.key
 import-cosign.pub
 key.pem
 roletoken.txt
+service_cert.pem
