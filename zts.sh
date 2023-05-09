@@ -1,5 +1,5 @@
 #!/bin/bash
-zts-roletoken -domain cd.docker.registry -svc-cert-file ~/.athenz/cert -svc-key-file ~/.athenz/key -zts https://zts.athens.yahoo.com:4443/zts/v1 > roletoken.txt
+zts-roletoken -role dummy_role_pusher -domain cd.docker.registry -svc-cert-file ~/.athenz/cert -svc-key-file ~/.athenz/key -zts https://zts.athens.yahoo.com:4443/zts/v1 > roletoken.txt
 docker login -u user.$USER -p $(cat roletoken.txt) docker.ouroath.com:4443
 
 # rm -fr ./service_cert.pem
