@@ -37,10 +37,11 @@ else
 	rtkn64=$(echo -n "user.${USER}:$rtkn" | base64 --wrap 0)
 fi
 jwt=$(curl -fsL -H "Authorization: Basic $rtkn64" "https://docker.ouroath.com:4443/token?service=docker.ouroath.com&scope=repository:${IMAGE}:${SCOPE}" | jq -r .token)
-echo "$jwt\n"
+echo "$jwt"
+echo ""
 
 echo "list image tags:"
-curl -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/tags/list
+ curl -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/tags/list
 echo ""
 
 echo "fetch the manifest for the existing image:tag (tag=latest)"
@@ -48,16 +49,16 @@ curl -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443
 echo ""
 
 echo "fetch the manifest for the existing image but bogus tag (nosuchref):"
-curl -i -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/manifests/nosuchref
+curl -v -i -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/manifests/nosuchref
 echo ""
 
 echo "fetch the manifest for the existing image with digest1 instead of tag:"
-curl -i -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/manifests/$DIGEST1
+curl -v -i -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/manifests/$DIGEST1
 echo ""
 
-echo "fetch the manifest for the existing image with digest2 instead of tag:"
-curl -i -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/manifests/$DIGEST2
-echo ""
+# echo "fetch the manifest for the existing image with digest2 instead of tag:"
+# curl -i -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/manifests/$DIGEST2
+# echo ""
 
 # echo "fetch the manifest for a non-existing image:"
 # curl -i -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/dsavints777/nosuchimg/manifests/latest
