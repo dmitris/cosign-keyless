@@ -11,8 +11,8 @@ set -euo pipefail
 
 # remember to run 'athenz-user-cert' unless done in the last hour!
 SERVER="docker.ouroath.com:4443"
-IMAGE="dsavints777/busybox-deleteme01" # CHANGE THIS! used as default if no $1
-SCOPE="pull" # or "pull,push" if needed
+IMAGE="dsavints777/scratch-b3e246cf" # CHANGE THIS! used as default if no $1
+SCOPE="pull,push" # "pull" alone gives 404 error on bad tag, "pull,push" - 403
 # declare ROLE
 ROLE="dummy_role_pusher" # optional - normally not needed!
 UNAME=$(uname)
@@ -40,20 +40,20 @@ jwt=$(curl -fsL -H "Authorization: Basic $rtkn64" "https://docker.ouroath.com:44
 echo "$jwt"
 echo ""
 
-echo "list image tags:"
- curl -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/tags/list
-echo ""
+# echo "list image tags:"
+#  curl -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/tags/list
+# echo ""
 
 echo "fetch the manifest for the existing image:tag (tag=latest)"
 curl -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/manifests/latest
 echo ""
 
-echo "fetch the manifest for the existing image but bogus tag (nosuchref):"
-curl -v -i -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/manifests/nosuchref
-echo ""
+# echo "fetch the manifest for the existing image but bogus tag (nosuchref):"
+# curl -v -i -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/manifests/nosuchref
+# echo ""
 
-echo "fetch the manifest for the existing image with digest1 instead of tag:"
-curl -v -i -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/manifests/$DIGEST1
+echo "fetch the manifest for the existing image with a non-existing digest instead of tag:"
+curl -v -i -H "${ACC}" -H "Authorization: Bearer $jwt" https://docker.ouroath.com:4443/v2/$IMAGE/manifests/sha256-13d3fb443f7c5d24d66236ff6db30e8370f881cbb87b6c9f442d463dd56f3955.sig
 echo ""
 
 # echo "fetch the manifest for the existing image with digest2 instead of tag:"
