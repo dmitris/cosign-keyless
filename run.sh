@@ -10,6 +10,10 @@ DOCKER_REGISTRY="docker.ouroath.com:4443"
 DOCKER_USER="${USER}777"  ## CHANGE THIS to your docker repo!
 BASE_IMAGE=scratch
 
+# commands copied from zts.sh for convenience, to be able to run the single script
+zts-roletoken -role dummy_role_pusher -domain cd.docker.registry -svc-cert-file ~/.athenz/cert -svc-key-file ~/.athenz/key -zts https://zts.athens.yahoo.com:4443/zts/v1 > roletoken.txt
+docker login -u user.$USER -p $(cat roletoken.txt) docker.ouroath.com:4443
+
 IMG=${IMAGE_URI_DIGEST:-}
 TIMESTAMP_SERVER_URL=${TIMESTAMP_SERVER_URL:="https://freetsa.org/tsr"}
 if [[ "$#" -ge 1 ]]; then
@@ -39,8 +43,9 @@ rm -f *.pem import-cosign.* && /tmp/gencert && COSIGN_PASSWORD="$passwd" cosign 
 
 # crane digest $IMG || true
 
+# NB - add '--verbose' flag to 'cosign sign' to see the HTTP requests
 echo "cosign sign:"
-COSIGN_PASSWORD="$passwd" cosign sign --verbose --timestamp-server-url "${TIMESTAMP_SERVER_URL}" --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
+COSIGN_PASSWORD="$passwd" cosign sign --timestamp-server-url "${TIMESTAMP_SERVER_URL}" --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
 
 # key is now longer needed
 rm -f key.pem import-cosign.* 
