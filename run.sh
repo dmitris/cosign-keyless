@@ -7,8 +7,8 @@ set -euo pipefail
 # - go
 
 DOCKER_REGISTRY="docker.ouroath.com:4443"
-DOCKER_USER="${USER}777"  ## CHANGE THIS to your docker repo!
-BASE_IMAGE=scratch
+DOCKER_USER="dsavints777"  ## CHANGE THIS to your docker repo!
+BASE_IMAGE=busybox
 
 # commands copied from zts.sh for convenience, to be able to run the single script
 zts-roletoken -role dummy_role_pusher -domain cd.docker.registry -svc-cert-file ~/.athenz/cert -svc-key-file ~/.athenz/key -zts https://zts.athens.yahoo.com:4443/zts/v1 > roletoken.txt
@@ -45,7 +45,7 @@ rm -f *.pem import-cosign.* && /tmp/gencert && COSIGN_PASSWORD="$passwd" cosign 
 
 # NB - add '--verbose' flag to 'cosign sign' to see the HTTP requests
 echo "cosign sign:"
-COSIGN_PASSWORD="$passwd" cosign sign --timestamp-server-url "${TIMESTAMP_SERVER_URL}" --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
+COSIGN_PASSWORD="$passwd" cosign sign --verbose --timestamp-server-url "${TIMESTAMP_SERVER_URL}" --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
 
 # key is now longer needed
 rm -f key.pem import-cosign.* 
