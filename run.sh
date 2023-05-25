@@ -14,6 +14,8 @@ BASE_IMAGE=busybox
 zts-roletoken -role dummy_role_pusher -domain cd.docker.registry -svc-cert-file ~/.athenz/cert -svc-key-file ~/.athenz/key -zts https://zts.athens.yahoo.com:4443/zts/v1 > roletoken.txt
 docker login -u user.$USER -p $(cat roletoken.txt) docker.ouroath.com:4443
 
+uuidgen | head -c 8 | tr 'A-Z' 'a-z' > random.txt
+
 IMG=${IMAGE_URI_DIGEST:-}
 TIMESTAMP_SERVER_URL=${TIMESTAMP_SERVER_URL:="https://freetsa.org/tsr"}
 if [[ "$#" -ge 1 ]]; then
