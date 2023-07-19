@@ -37,7 +37,7 @@ echo "generate keys and certificates with gencert"
 passwd=$(uuidgen | head -c 32 | tr 'A-Z' 'a-z')
 rm -f *.pem import-cosign.* && /tmp/gencert && COSIGN_PASSWORD="$passwd" cosign import-key-pair --key key.pem
 
-COSIGN_PASSWORD="$passwd" cosign sign --timestamp-server-url "${TIMESTAMP_SERVER_URL}" \
+COSIGN_PASSWORD="$passwd" cosign sign --verbose --timestamp-server-url "${TIMESTAMP_SERVER_URL}" \
 	--timestamp-client-cacert ${TIMESTAMP_CLIENT_CACERT} --timestamp-client-cert ${TIMESTAMP_CLIENT_CERT} \
 	--timestamp-client-key ${TIMESTAMP_CLIENT_KEY} --timestamp-server-name ${TIMESTAMP_SERVER_NAME}\
 	--upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
