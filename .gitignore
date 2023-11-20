@@ -5,3 +5,5 @@ gencert
 import-cosign.key
 import-cosign.pub
 key.pem
+tsa.crt
+tsa-certchain.pem
