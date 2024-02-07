@@ -6,6 +6,7 @@ set -euo pipefail
 # - crane
 # - go
 
+COSIGN_BINARY=${COSIGN_BINARY:-cosign}
 IMG=${IMAGE_URI_DIGEST:-}
 TIMESTAMP_SERVER_URL=${TIMESTAMP_SERVER_URL:="https://freetsa.org/tsr"}
 TIMESTAMP_CERTCHAIN=${TIMESTAMP_CERTCHAIN:=""}
@@ -34,7 +35,7 @@ elif [[ -z "${IMG}" ]]; then
 	IMG=$IMAGE_URI@$SRC_DIGEST
 fi
 
-echo "IMG (IMAGE_URI_DIGEST): $IMG, TIMESTAMP_SERVER_URL: $TIMESTAMP_SERVER_URL, TIMESTAMP_CERTCHAIN: $TIMESTAMP_CERTCHAIN"
+echo "IMG (IMAGE_URI_DIGEST): $IMG, TIMESTAMP_SERVER_URL: $TIMESTAMP_SERVER_URL, TIMESTAMP_CERTCHAIN: $TIMESTAMP_CERTCHAIN, COSIGN_BINARY: ${COSIGN_BINARY}"
 
 GOBIN=/tmp GOPROXY=https://proxy.golang.org,direct go install -v github.com/dmitris/gencert@latest
 
@@ -46,13 +47,13 @@ passwd=$(uuidgen | head -c 32 | tr 'A-Z' 'a-z')
 rm -f import-cosign.* && /tmp/gencert && COSIGN_PASSWORD="$passwd" cosign import-key-pair --key key.pem
 
 echo "cosign sign:"
-COSIGN_PASSWORD="$passwd" cosign sign --timestamp-server-url "${TIMESTAMP_SERVER_URL}" --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
+COSIGN_PASSWORD="$passwd" ${COSIGN_BINARY} sign --timestamp-server-url "${TIMESTAMP_SERVER_URL}" --upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
 
 # key is now longer needed
 rm -f key.pem import-cosign.* 
 
 echo "cosign verify:"
-cosign verify --private-infrastructure --insecure-ignore-sct --check-claims=true \
+${COSIGN_BINARY} verify --private-infrastructure --insecure-ignore-sct --check-claims=true \
 	--certificate-identity-regexp 'xyz@nosuchprovider.com' --certificate-oidc-issuer-regexp '.*' \
 	--certificate-chain cacert.pem --timestamp-certificate-chain=$TIMESTAMP_CERTCHAIN $IMG
 
