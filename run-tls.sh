@@ -12,6 +12,7 @@ set -euo pipefail
 #
 # TIMESTAMP_CLIENT_CACERT=$CERT_BASE/cacert.pem TIMESTAMP_CLIENT_CERT=$CERT_BASE/cert.pem TIMESTAMP_CLIENT_KEY=$CERT_BASE/key.pem TIMESTAMP_SERVER_NAME=change.to.real.server.name TIMESTAMP_SERVER_URL=https://freetsa.org/tsr bash -x ./run.sh |& tee /tmp/out
 
+TIMESTAMP_SERVER_URL=${TIMESTAMP_SERVER_URL:="https://freetsa.org/tsr"}
 IMG=${IMAGE_URI_DIGEST:-}
 if [[ "$#" -ge 1 ]]; then
 	IMG=$1
