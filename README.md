@@ -1,6 +1,10 @@
 # cosign-keyless
-`run.sh` is a test script that generates CA and certificate and
+* `run.sh` is a test script that generates CA and certificate and
 runs `cosign sign` and `cosign verify` with the ["keyless verification"](https://docs.sigstore.dev/cosign/keyless/).
+It uses the test-friendly temporary image registry <https://ttl.sh/>
+and the public TSA server <https://freetsa.org/tsr>
+* `run-tsa-mtls.sh` expand `run.sh` to add mTLS authentication to the TSA server and with appropriate parameters
+can be used to test mTLS access to a custom TSA server.
 
 ## Prerequisites
 - Go - https://go.dev/dl or `brew install golang`
@@ -22,6 +26,8 @@ or through the `IMAGE_URI_DIGEST` environment variable:
 ```bash
 ./run.sh ttl.sh/2291f828@sha256:b5d6fe0712636ceb7430189de28819e195e8966372edfc2d9409d79402a0dc16
 ```
+
+See the comments in `run-tsa-mtls.sh` for the required parameters to run the script.
 
 ## sigstore/cosign Pull Request 3052 - mTLS to TSA
 To test `cosign` support for an mTLS connection to the timestamp server ([sigstore/cosign#3052](https://github.com/sigstore/cosign/pull/3052)), use `./run-tls.sh` and
