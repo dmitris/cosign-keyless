@@ -9,8 +9,9 @@ set -euo pipefail
 # Sample run - assumptions:
 # 1) $CERT_BASE is the directory with certificates - adjust the file name as needed
 # 2) change the value of TIMESTAMP_SERVER_URL to the URL of the timestamp server started with TLS credentials
+# 3) change the value of TIMESTAMP_SERVER_NAME to the name of the TSA server contained in the SAN fields of its TLS certificate.
 #
-# TIMESTAMP_CLIENT_CACERT=$CERT_BASE/cacert.pem TIMESTAMP_CLIENT_CERT=$CERT_BASE/cert.pem TIMESTAMP_CLIENT_KEY=$CERT_BASE/key.pem TIMESTAMP_SERVER_NAME=change.to.real.server.name TIMESTAMP_SERVER_URL=https://freetsa.org/tsr bash -x ./run.sh |& tee /tmp/out
+# TIMESTAMP_CLIENT_CACERT=$CERT_BASE/cacert.pem TIMESTAMP_CLIENT_CERT=$CERT_BASE/cert.pem TIMESTAMP_CLIENT_KEY=$CERT_BASE/key.pem TIMESTAMP_SERVER_NAME=freetsa.org TIMESTAMP_SERVER_URL=https://freetsa.org/tsr bash -x ./run.sh |& tee /tmp/out
 
 TIMESTAMP_SERVER_URL=${TIMESTAMP_SERVER_URL:="https://freetsa.org/tsr"}
 IMG=${IMAGE_URI_DIGEST:-}
@@ -39,8 +40,10 @@ passwd=$(uuidgen | head -c 32 | tr 'A-Z' 'a-z')
 rm -f *.pem import-cosign.* && /tmp/gencert && COSIGN_PASSWORD="$passwd" cosign import-key-pair --key key.pem
 
 COSIGN_PASSWORD="$passwd" cosign sign --timestamp-server-url "${TIMESTAMP_SERVER_URL}" \
-	--timestamp-client-cacert ${TIMESTAMP_CLIENT_CACERT} --timestamp-client-cert ${TIMESTAMP_CLIENT_CERT} \
-	--timestamp-client-key ${TIMESTAMP_CLIENT_KEY} --timestamp-server-name ${TIMESTAMP_SERVER_NAME}\
+	--timestamp-client-cacert ${TIMESTAMP_CLIENT_CACERT} \
+	--timestamp-client-cert ${TIMESTAMP_CLIENT_CERT} \
+	--timestamp-client-key ${TIMESTAMP_CLIENT_KEY} \
+	--timestamp-server-name ${TIMESTAMP_SERVER_NAME}\
 	--upload=true --tlog-upload=false --key import-cosign.key --certificate-chain cacert.pem --cert cert.pem $IMG
 
 # key is now longer needed
