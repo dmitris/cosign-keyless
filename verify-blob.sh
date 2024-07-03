@@ -15,8 +15,6 @@ if [[ "${TIMESTAMP_SERVER_URL}" == "https://freetsa.org/tsr" ]]; then
 	curl -sSfL https://freetsa.org/files/tsa.crt -o tsa.crt
 	curl -sSfL https://freetsa.org/files/cacert.pem -o cacert.pem
 	cat cacert.pem tsa.crt > tsa-certchain.pem
-	echo "(PWD: $PWD) tsa-certchain.pem:"
-	cat tsa-certchain.pem
 	TIMESTAMP_CERTCHAIN="tsa-certchain.pem"
 fi
 if [[ -z "${TIMESTAMP_CERTCHAIN}" ]]; then
@@ -44,14 +42,14 @@ COSIGN_PASSWORD="$passwd" ${COSIGN} sign-blob --timestamp-server-url "${TIMESTAM
 # key is now longer needed
 rm -f key.pem import-cosign.*
 
-echo "cosign verify-blob (with --certificate-chain):"
-cosign verify-blob --private-infrastructure --insecure-ignore-sct \
+echo "${COSIGN} verify-blob (with --certificate-chain):"
+${COSIGN} verify-blob --private-infrastructure --insecure-ignore-sct \
 	--certificate-identity-regexp 'xyz@nosuchprovider.com' --certificate-oidc-issuer-regexp '.*' \
 	--certificate cert.pem --certificate-chain cacert.pem \
 	--rfc3161-timestamp ${SIG_TIMESTAMP_FILE} --timestamp-certificate-chain=$TIMESTAMP_CERTCHAIN \
 	--signature README.md.sig README.md
-echo "cosign verify-blob (with --ca-roots):"	
-cosign verify-blob --private-infrastructure --insecure-ignore-sct \
+echo "${COSIGN} verify-blob (with --ca-roots):"
+${COSIGN} verify-blob --private-infrastructure --insecure-ignore-sct \
 	--certificate-identity-regexp 'xyz@nosuchprovider.com' --certificate-oidc-issuer-regexp '.*' \
 	--certificate cert.pem --ca-roots cacert.pem \
 	--rfc3161-timestamp ${SIG_TIMESTAMP_FILE} --timestamp-certificate-chain=$TIMESTAMP_CERTCHAIN \
