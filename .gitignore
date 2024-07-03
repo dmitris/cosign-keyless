@@ -5,5 +5,7 @@ gencert
 import-cosign.key
 import-cosign.pub
 key.pem
+README.md.sig
+sig-timestamp.txt
 tsa.crt
 tsa-certchain.pem
