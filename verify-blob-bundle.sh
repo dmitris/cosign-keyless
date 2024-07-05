@@ -43,7 +43,7 @@ COSIGN_PASSWORD="$passwd" ${COSIGN} sign-blob --verbose \
 	--bundle ${COSIGN_BUNDLE_FILE} README.md
 
 # key is now longer needed
-# rm -f key.pem import-cosign.*
+rm -f key.pem import-cosign.*
 
 echo "${COSIGN} verify-blob (with --certificate-chain):"
 ${COSIGN} verify-blob --private-infrastructure --insecure-ignore-sct \
