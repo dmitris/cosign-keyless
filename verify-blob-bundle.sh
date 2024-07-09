@@ -36,7 +36,7 @@ passwd=$(uuidgen | head -c 32 | tr 'A-Z' 'a-z')
 
 SIG_TIMESTAMP_FILE="sig-timestamp.txt"
 COSIGN_BUNDLE_FILE="cosign.bundle"
-echo "cosign sign-blob:"
+echo "${COSIGN} sign-blob:"
 COSIGN_PASSWORD="$passwd" ${COSIGN} sign-blob --verbose \
 	--timestamp-server-url "${TIMESTAMP_SERVER_URL}" \
     --rfc3161-timestamp ${SIG_TIMESTAMP_FILE} --tlog-upload=false --key import-cosign.key \
@@ -48,13 +48,13 @@ rm -f key.pem import-cosign.*
 echo "${COSIGN} verify-blob (with --certificate-chain):"
 ${COSIGN} verify-blob --private-infrastructure --insecure-ignore-sct \
 	--certificate-identity-regexp 'xyz@nosuchprovider.com' --certificate-oidc-issuer-regexp '.*' \
-	--certificate-chain cacert.pem \
+	--certificate cert.pem --certificate-chain cacert.pem \
 	--rfc3161-timestamp ${SIG_TIMESTAMP_FILE} --timestamp-certificate-chain=$TIMESTAMP_CERTCHAIN \
 	--bundle ${COSIGN_BUNDLE_FILE} README.md
 echo "${COSIGN} verify-blob (with --ca-roots):"
 ${COSIGN} verify-blob --private-infrastructure --insecure-ignore-sct \
 	--certificate-identity-regexp 'xyz@nosuchprovider.com' --certificate-oidc-issuer-regexp '.*' \
-	--ca-roots cacert.pem \
+	--certificate cert.pem --ca-roots cacert.pem \
 	--rfc3161-timestamp ${SIG_TIMESTAMP_FILE} --timestamp-certificate-chain=$TIMESTAMP_CERTCHAIN \
 	--bundle ${COSIGN_BUNDLE_FILE} README.md
 
